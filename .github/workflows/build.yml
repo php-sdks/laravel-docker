@@ -56,7 +56,7 @@ jobs:
             ${{ env.GITHUB_CR_REPO }}
           build-args: |
             TARGETPLATFORM=${{ matrix.platform }}
-            PHP_TAG=${{ github.event.inputs.version }
+            PHP_TAG=${{ github.event.inputs.version }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
@@ -102,7 +102,7 @@ jobs:
           images: |
             ${{ env.GITHUB_CR_REPO }}
           tags: |
-            type=raw,event=${{ github.event.inputs.version }
+            type=raw,event=${{ github.event.inputs.version }}
 
       - name: Docker tags
         run: |
