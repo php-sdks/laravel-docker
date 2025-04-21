@@ -14,15 +14,18 @@ RUN set -ex; \
         autoconf build-base libmemcached-dev \
         php$PHP_VER-pdo_mysql \
         php$PHP_VER-pdo_pgsql \
+        php$PHP_VER-session \
         php$PHP_VER-sockets \
+        php$PHP_VER-tokenizer \
         php$PHP_VER-bcmath \
         php$PHP_VER-pcntl \
         php$PHP_VER-intl \
+        php$PHP_VER-dom \
         php$PHP_VER-dev \
         composer; \
     cp /usr/lib/php$PHP_VER/modules/* $EXTENSION_DIR; \
     pecl install memcached; \
-    docker-php-ext-enable opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl memcached; \
+    docker-php-ext-enable opcache pdo_mysql pdo_pgsql session sockets tokenizer bcmath pcntl intl dom memcached; \
     apk del --purge autoconf build-base; \
     cd
 
