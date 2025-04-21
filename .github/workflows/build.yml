@@ -102,7 +102,7 @@ jobs:
           images: |
             ${{ env.GITHUB_CR_REPO }}
           tags: |
-            type=raw,event=${{ github.event.inputs.version }}
+            type=raw,value=${{ github.event.inputs.version }}
 
       - name: Docker tags
         run: |
