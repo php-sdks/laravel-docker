@@ -21,12 +21,13 @@ RUN set -ex; \
         php$PHP_VER-pcntl \
         php$PHP_VER-intl \
         php$PHP_VER-dom \
-        php$PHP_VER-dev \
-        composer; \
+        php$PHP_VER-dev; \
     cp /usr/lib/php$PHP_VER/modules/* $EXTENSION_DIR; \
     pecl install memcached; \
     docker-php-ext-enable opcache pdo_mysql pdo_pgsql session sockets tokenizer bcmath pcntl intl dom memcached; \
     apk del --purge autoconf build-base; \
+    curl -o /usr/bin/composer https://getcomposer.org/composer.phar; \
+    chmod +x /usr/bin/composer; \
     cd
 
 RUN apk add linux-headers zlib-dev libzip-dev freetype-dev libjpeg-turbo-dev libpng-dev
