@@ -37,7 +37,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg; \
     docker-php-ext-install gd zip
 
 RUN set -ex; \
-    [ -n "$XDEBUG_MODE" ] \
+    [[ -n "$XDEBUG_MODE" ]] \
     && pecl install xdebug && docker-php-ext-enable xdebug \
     && ini=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.mode=$XDEBUG_MODE" >> $ini \
