@@ -46,6 +46,7 @@ RUN set -ex; \
       echo "xdebug.client_host=host.docker.internal" >> $ini; \
     fi
 
+RUN apk add pnpm
 RUN apk del --purge autoconf build-base
 
 WORKDIR /var/www
