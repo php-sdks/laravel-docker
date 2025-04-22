@@ -70,6 +70,7 @@ jobs:
           build-args: |
             TARGETPLATFORM=${{ matrix.platform }}
             PHP_TAG=${{ github.event.inputs.version }}
+            XDEBUG_MODE=${{ github.event.inputs.xdebug }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
