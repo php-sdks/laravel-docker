@@ -122,7 +122,11 @@ jobs:
               echo $tags
             })
           fi
-          echo "DOCKER_METADATA_TAGS=$tags" >> $GITHUB_ENV
+          {
+            echo 'DOCKER_METADATA_TAGS<<EOF'
+            echo "$tags"
+            echo EOF
+          } >> $GITHUB_ENV
 
       - name: Docker meta
         id: meta
