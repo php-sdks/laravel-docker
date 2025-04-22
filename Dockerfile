@@ -13,7 +13,7 @@ ENV XDEBUG_PORT=9003
 RUN set -ex; \
     export EXTENSION_DIR=$(php -r 'echo ini_get("extension_dir");'); \
     export PHP_VER=$(echo ${PHP_TAG} | awk -F'[.-]' '{print $1$2}'); \
-    apk add \
+    apk add --no-cache \
         autoconf build-base libmemcached-dev \
         php$PHP_VER-pdo_mysql \
         php$PHP_VER-pdo_pgsql \
@@ -32,7 +32,7 @@ RUN set -ex; \
     chmod +x /usr/bin/composer; \
     cd
 
-RUN apk add linux-headers zlib-dev libzip-dev freetype-dev libjpeg-turbo-dev libpng-dev
+RUN apk add --no-cache linux-headers zlib-dev libzip-dev freetype-dev libjpeg-turbo-dev libpng-dev
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg; \
     docker-php-ext-install gd zip
 
@@ -46,7 +46,7 @@ RUN set -ex; \
       echo "xdebug.client_host=host.docker.internal" >> $ini; \
     fi
 
-RUN apk add pnpm
+RUN apk add --no-cache pnpm
 RUN apk del --purge autoconf build-base
 
 WORKDIR /var/www
