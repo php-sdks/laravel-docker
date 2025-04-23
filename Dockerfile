@@ -32,8 +32,8 @@ RUN set -ex; \
     chmod +x /usr/bin/composer; \
     cd
 
-RUN apk add --no-cache linux-headers zlib-dev libzip-dev freetype-dev libjpeg-turbo-dev libpng-dev
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg; \
+RUN apk add --no-cache linux-headers zlib-dev libzip-dev freetype-dev libjpeg-turbo-dev libpng-dev libwebp-dev
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
     docker-php-ext-install gd zip
 
 RUN set -ex; \
