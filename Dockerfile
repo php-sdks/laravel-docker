@@ -8,6 +8,8 @@ ENV PHP_DATE_TIMEZONE=UTC
 ARG XDEBUG_MODE=''
 ENV XDEBUG_PORT=9003
 
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
 RUN set -ex; \
@@ -32,13 +34,11 @@ RUN set -ex; \
     chmod +x /usr/bin/composer; \
     cd
 
-RUN apk add --no-cache linux-headers zlib-dev libzip-dev freetype-dev libjpeg-turbo-dev libpng-dev libwebp-dev
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
-    docker-php-ext-install gd zip
+RUN install-php-extensions gd zip
 
 RUN set -ex; \
     if [ -n "$XDEBUG_MODE" ]; then \
-      pecl install xdebug && docker-php-ext-enable xdebug; \
+      install-php-extensions xdebug; \
       ini=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
       echo "xdebug.mode=$XDEBUG_MODE" >> $ini; \
       echo "xdebug.start_upon_error=yes" >> $ini; \
