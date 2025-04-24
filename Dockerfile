@@ -8,15 +8,12 @@ ENV PHP_DATE_TIMEZONE=UTC
 ARG XDEBUG_MODE=''
 ENV XDEBUG_PORT=9003
 
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
 RUN set -ex; \
     export EXTENSION_DIR=$(php -r 'echo ini_get("extension_dir");'); \
     export PHP_VER=$(echo ${PHP_TAG} | awk -F'[.-]' '{print $1$2}'); \
     apk add --no-cache \
-        autoconf build-base libmemcached-dev \
         php$PHP_VER-pdo_mysql \
         php$PHP_VER-pdo_pgsql \
         php$PHP_VER-session \
@@ -28,13 +25,11 @@ RUN set -ex; \
         php$PHP_VER-dom \
         php$PHP_VER-dev; \
     cp /usr/lib/php$PHP_VER/modules/* $EXTENSION_DIR; \
-    pecl install memcached; \
-    docker-php-ext-enable opcache pdo_mysql pdo_pgsql session sockets tokenizer bcmath pcntl intl dom memcached; \
-    curl -o /usr/bin/composer https://getcomposer.org/composer.phar; \
-    chmod +x /usr/bin/composer; \
+    docker-php-ext-enable opcache pdo_mysql pdo_pgsql session sockets tokenizer bcmath pcntl intl dom; \
     cd
 
-RUN install-php-extensions gd zip
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN install-php-extensions gd zip memcached @composer
 
 RUN set -ex; \
     if [ -n "$XDEBUG_MODE" ]; then \
@@ -47,6 +42,5 @@ RUN set -ex; \
     fi
 
 RUN apk add --no-cache pnpm
-RUN apk del --purge autoconf build-base
 
 WORKDIR /var/www
