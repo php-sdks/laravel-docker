@@ -10,6 +10,12 @@ ENV XDEBUG_PORT=9003
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
+FROM node:lts-alpine AS node
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/bin /usr/local/bin
+COPY --from=node /usr/local/include /usr/local/include
+
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN install-php-extensions gd zip opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl memcached @composer
 
@@ -22,9 +28,6 @@ RUN set -ex; \
       echo "xdebug.start_upon_error=yes" >> $ini; \
       echo "xdebug.client_port=${XDEBUG_PORT:-9003}" >> $ini; \
       echo "xdebug.client_host=host.docker.internal" >> $ini; \
-    fi; \
-    curl -fsSL fnm.vercel.app/install | bash -s -- --skip-shell; \
-    ~/.local/share/fnm/fnm install 22; \
-    npm install -g pnpm
+    fi
 
 WORKDIR /var/www
