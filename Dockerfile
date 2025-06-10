@@ -14,6 +14,7 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 RUN install-php-extensions gd zip opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl memcached @composer
 
 RUN set -ex; \
+    apk install --no-cache bash; \
     if [ -n "$XDEBUG_MODE" ]; then \
       install-php-extensions xdebug; \
       ini=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
