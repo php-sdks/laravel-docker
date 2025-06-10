@@ -1,6 +1,6 @@
-FROM node:lts-alpine AS node
-
 ARG PHP_TAG=8.4-fpm-alpine
+
+FROM node:lts-alpine AS node
 FROM php:${PHP_TAG}
 
 ARG PHP_TAG=8.4-fpm-alpine
