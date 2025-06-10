@@ -1,3 +1,5 @@
+FROM node:lts-alpine AS node
+
 ARG PHP_TAG=8.4-fpm-alpine
 FROM php:${PHP_TAG}
 
@@ -10,7 +12,6 @@ ENV XDEBUG_PORT=9003
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
-FROM node:lts-alpine AS node
 COPY --from=node /usr/lib /usr/lib
 COPY --from=node /usr/local/lib /usr/local/lib
 COPY --from=node /usr/local/bin /usr/local/bin
