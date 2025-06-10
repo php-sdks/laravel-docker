@@ -1,6 +1,4 @@
 ARG PHP_TAG=8.4-fpm-alpine
-
-FROM node:lts-alpine AS node
 FROM php:${PHP_TAG}
 
 ARG PHP_TAG=8.4-fpm-alpine
@@ -12,16 +10,11 @@ ENV XDEBUG_PORT=9003
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
-COPY --from=node /usr/lib /usr/lib
-COPY --from=node /usr/local/lib /usr/local/lib
-COPY --from=node /usr/local/bin /usr/local/bin
-COPY --from=node /usr/local/include /usr/local/include
-
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN install-php-extensions gd zip opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl memcached @composer
 
+RUN apk add --no-cache bash nodejs npm && npm install -g pnpm
 RUN set -ex; \
-    apk add --no-cache bash; \
     if [ -n "$XDEBUG_MODE" ]; then \
       install-php-extensions xdebug; \
       ini=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
