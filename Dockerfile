@@ -10,26 +10,8 @@ ENV XDEBUG_PORT=9003
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
-RUN set -ex; \
-    export EXTENSION_DIR=$(php -r 'echo ini_get("extension_dir");'); \
-    export PHP_VER=$(echo ${PHP_TAG} | awk -F'[.-]' '{print $1$2}'); \
-    apk add --no-cache \
-        php$PHP_VER-pdo_mysql \
-        php$PHP_VER-pdo_pgsql \
-        php$PHP_VER-session \
-        php$PHP_VER-sockets \
-        php$PHP_VER-tokenizer \
-        php$PHP_VER-bcmath \
-        php$PHP_VER-pcntl \
-        php$PHP_VER-intl \
-        php$PHP_VER-dom \
-        php$PHP_VER-dev; \
-    cp /usr/lib/php$PHP_VER/modules/* $EXTENSION_DIR; \
-    docker-php-ext-enable opcache pdo_mysql pdo_pgsql session sockets tokenizer bcmath pcntl intl dom; \
-    cd
-
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN install-php-extensions gd zip memcached @composer
+RUN install-php-extensions gd zip opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl memcached @composer
 
 RUN set -ex; \
     if [ -n "$XDEBUG_MODE" ]; then \
