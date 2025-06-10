@@ -21,7 +21,7 @@ RUN set -ex; \
       echo "xdebug.start_upon_error=yes" >> $ini; \
       echo "xdebug.client_port=${XDEBUG_PORT:-9003}" >> $ini; \
       echo "xdebug.client_host=host.docker.internal" >> $ini; \
-    fi
+    fi; \
     curl -fsSL fnm.vercel.app/install | bash -s -- --skip-shell; \
     ~/.local/share/fnm/fnm install 22; \
     npm install -g pnpm
