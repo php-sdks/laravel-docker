@@ -23,6 +23,6 @@ RUN set -ex; \
       echo "xdebug.client_host=host.docker.internal" >> $ini; \
     fi
 
-RUN apk add --no-cache pnpm
+RUN apk add --no-cache nodejs npm && npm install -g pnpm
 
 WORKDIR /var/www
