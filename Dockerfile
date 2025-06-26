@@ -13,7 +13,7 @@ ENV XDEBUG_PORT=9003
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN install-php-extensions gd zip opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl memcached @composer
 
-RUN apk add --no-cache bash nodejs npm && npm install -g pnpm
+RUN apk add --no-cache bash git nodejs npm && npm install -g pnpm
 RUN set -ex; \
     if [ -n "$XDEBUG_MODE" ]; then \
       install-php-extensions xdebug; \
