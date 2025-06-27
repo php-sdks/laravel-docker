@@ -149,4 +149,4 @@ jobs:
 
       - name: Check image
         run: |
-          docker run --rm -it ${{ env.GITHUB_CR_REPO }}:${{ steps.meta.outputs.version }} php -m
+          docker run --rm ${{ env.GITHUB_CR_REPO }}:${{ steps.meta.outputs.version }} php -m
