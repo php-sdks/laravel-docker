@@ -1,7 +1,7 @@
-ARG PHP_TAG=8.4-fpm-alpine
-FROM php:${PHP_TAG}
+ARG FROM_TAG=php8-alpine
+ARG FROM=dunglas/frankenphp:${FROM_TAG}
+FROM ${FROM}
 
-ARG PHP_TAG=8.4-fpm-alpine
 ENV PHP_MEMORY_LIMIT=256M
 ENV PHP_DATE_TIMEZONE=UTC
 
@@ -24,4 +24,4 @@ RUN set -ex; \
       echo "xdebug.client_host=host.docker.internal" >> $ini; \
     fi
 
-WORKDIR /var/www
+WORKDIR /app
