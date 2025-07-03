@@ -116,7 +116,7 @@ jobs:
       - name: Docker tags
         shell: bash
         run: |
-          tags=${{ github.event.inputs.version }}
+          tags="type=raw,value=${{ github.event.inputs.version }}"
           if [ -n "${{ github.event.inputs.xdebug }}" ]; then
             tags="$tags-${{ github.event.inputs.xdebug }}"
           fi
@@ -144,8 +144,7 @@ jobs:
         with:
           images: |
             ${{ env.GITHUB_CR_REPO }}
-          tags: |
-            type=raw,value=${{ env.DOCKER_METADATA_TAGS }}
+          tags: ${{ env.DOCKER_METADATA_TAGS }}
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
