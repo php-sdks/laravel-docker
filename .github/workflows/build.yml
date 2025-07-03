@@ -3,10 +3,14 @@ name: Build Docker Image
 on:
   workflow_dispatch:
     inputs:
+      from_img:
+        description: From image
+        required: false
+        default: dunglas/frankenphp
       version:
         description: PHP version
         required: false
-        default: '8.4-fpm-alpine'
+        default: php8-alpine
       xdebug:
         description: XDebug mode
         required: false
@@ -69,7 +73,7 @@ jobs:
             ${{ env.GITHUB_CR_REPO }}
           build-args: |
             TARGETPLATFORM=${{ matrix.platform }}
-            PHP_TAG=${{ github.event.inputs.version }}
+            FROM_TAG=${{ github.event.inputs.version }}
             XDEBUG_MODE=${{ github.event.inputs.xdebug }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
 
@@ -115,6 +119,12 @@ jobs:
           tags=${{ github.event.inputs.version }}
           if [ -n "${{ github.event.inputs.xdebug }}" ]; then
             tags="$tags-${{ github.event.inputs.xdebug }}"
+          fi
+          if [[ "$tags" == *"php"* ]]; then
+            tags=$({
+              echo ${tags//php/}
+              echo $tags
+            })
           fi
           if [[ "$tags" == *"-alpine"* ]]; then
             tags=$({
