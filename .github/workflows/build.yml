@@ -117,14 +117,9 @@ jobs:
         shell: bash
         run: |
           tags="type=raw,value=${{ github.event.inputs.version }}"
+          tags=${tags//php/}
           if [ -n "${{ github.event.inputs.xdebug }}" ]; then
             tags="$tags-${{ github.event.inputs.xdebug }}"
-          fi
-          if [[ "$tags" == *"php"* ]]; then
-            tags=$({
-              echo ${tags//php/}
-              echo $tags
-            })
           fi
           if [[ "$tags" == *"-alpine"* ]]; then
             tags=$({
