@@ -7,6 +7,7 @@ ENV PHP_DATE_TIMEZONE=UTC
 
 ARG XDEBUG_MODE=''
 ENV XDEBUG_PORT=9003
+ENV XDEBUG_HOST=host.docker.internal
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
@@ -21,7 +22,7 @@ RUN set -ex; \
       echo "xdebug.mode=$XDEBUG_MODE" >> $ini; \
       echo "xdebug.start_upon_error=yes" >> $ini; \
       echo "xdebug.client_port=${XDEBUG_PORT:-9003}" >> $ini; \
-      echo "xdebug.client_host=host.docker.internal" >> $ini; \
+      echo "xdebug.client_host=${XDEBUG_HOST}" >> $ini; \
     fi
 
 WORKDIR /app
