@@ -9,9 +9,11 @@ ARG XDEBUG_MODE=''
 ENV XDEBUG_PORT=9003
 
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+RUN apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev fontconfig
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && docker-php-ext-install gd
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN install-php-extensions gd zip opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl redis memcached @composer
+RUN install-php-extensions zip opcache pdo_mysql pdo_pgsql sockets bcmath pcntl intl redis memcached @composer
 
 RUN apk add --no-cache bash git openssh-client nodejs npm && npm install -g pnpm
 RUN set -ex; \
